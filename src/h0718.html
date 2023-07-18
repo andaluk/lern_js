@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Курсы валют ЦБ РФ</title>
+    <style>
+        div#valutes div{
+            font-family: monospace;
+        }
+        div#valutes span{
+            display: inline-block;
+            text-align: right;
+        }
+        span.ilb1{width: 6ex;}
+        span.ilb2{width: 9ex;}
+    </style>
+</head>
+<body>
+    <div id="valutes"></div>
+    <script>
+        const uri = 'https://www.cbr-xml-daily.ru/daily_json.js'
+        const div = document.getElementById('valutes')
+
+        fetch(uri).then(resp => resp.json())
+        .then(resp => {
+
+            div.innerHTML += `<h1>Курсы валют на ${(new Date(resp.Date)).toLocaleDateString()}</h1>`
+            Object.keys(resp.Valute).sort().forEach(val => {
+
+                let v = resp.Valute[val]
+                let d = (Number(v.Value) - v.Previous).toFixed(4)
+                // Добавляем строку с валютой
+                div.innerHTML += `<div><span class="ilb1">${v.Nominal}</span> <span title="${v.Name}">${val} - 
+                    <span class="ilb2">${v.Value.toFixed(4)}</span> RUB (${d>=0 ? '+':''}${d})</div>`
+
+            })
+        })
+    </script>
+</body>
+</html>
