@@ -5,35 +5,49 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Курсы валют ЦБ РФ</title>
     <style>
-        div#valutes div{
+        table{
             font-family: monospace;
+            font-size: 120%;
+         }
+        tbody{
+           text-align: right;
         }
-        div#valutes span{
-            display: inline-block;
-            text-align: right;
+        td,th{
+            padding: 3px;
         }
-        span.ilb1{width: 6ex;}
-        span.ilb2{width: 9ex;}
     </style>
 </head>
 <body>
-    <div id="valutes"></div>
+    <h1 id="header"></h1>
+    <table>
+        <thead><th>Номинал</th><th>Валюта</th><th>Курс</th><th>База</th><th>Изменение</th></thead>
+        <tbody id="valutes"></tbody>
+    </table>
     <script>
         const uri = 'https://www.cbr-xml-daily.ru/daily_json.js'
-        const div = document.getElementById('valutes')
+        const getEl = id => document.getElementById(id)
+        const fDate = date => (new Date(date)).toLocaleDateString()
+        const header = getEl('header')
+        const tbody = getEl('valutes')
 
         fetch(uri).then(resp => resp.json())
         .then(resp => {
 
-            div.innerHTML += `<h1>Курсы валют на ${(new Date(resp.Date)).toLocaleDateString()}</h1>`
+            header.innerHTML = `Курсы валют на ${fDate(resp.Date)}`
+            tbody.innerHTML = ""
             Object.keys(resp.Valute).sort().forEach(val => {
 
-                let v = resp.Valute[val]
-                let d = (Number(v.Value) - v.Previous).toFixed(4)
+                const v = resp.Valute[val]
+                const d = (Number(v.Value) - v.Previous).toFixed(4)
                 // Добавляем строку с валютой
-                div.innerHTML += `<div><span class="ilb1">${v.Nominal}</span> <span title="${v.Name}">${val} - 
-                    <span class="ilb2">${v.Value.toFixed(4)}</span> RUB (${d>=0 ? '+':''}${d})</div>`
-
+                tbody.innerHTML += '<tr>'
+                    + `<td>${v.Nominal}</td>`
+                    + `<td title="${v.Name}">${val}</td>`
+                    + `<td>${v.Value.toFixed(4)}</td>`
+                    + `<td title="Российский рубль">RUB</td>`
+                    + `<td title="с ${fDate(resp.PreviousDate)}">${d>=0 ? '+':''}${d}</td>`
+                    + '</tr>'
+                 
             })
         })
     </script>
