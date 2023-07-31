@@ -5,10 +5,10 @@
     const API_URL_METEO_DATA = 'https://air-quality-api.open-meteo.com/v1/air-quality'
 
     // Собирает запрс из базового URL и словаря параметров
-    const mkurl = (u,s) => {
+    const fetchurl = (u,s) => {
         const r = new URL(u)
         r.search = new URLSearchParams(s)
-        return r
+        return fetch(r).then(resp => resp.json())
     }
 
     // Устанавливает название местоположения
@@ -44,13 +44,15 @@
         ])
         // Создаем строки по шаблону, заполняем их данными
         // и добавляем в таблицу
-        resp.hourly.time.forEach((element,index) => {
-            mkrow(rowTemplate,[
-                element,
-                resp.hourly.pm2_5[index],
-                resp.hourly.pm10[index]
-            ])
-        })
+        with(resp.hourly){
+            time.forEach((element,index) => {
+                mkrow(rowTemplate,[
+                    element,
+                    pm2_5[index],
+                    pm10[index]
+                ])
+            })
+        }
     }
 
     // Находим график и его контекст
@@ -74,12 +76,11 @@
     search.onkeyup = function(){
 
         // Сибираем URL и делаем запрос к Yandex
-        fetch(mkurl(API_URL_GEO_DATA, {
+        fetchurl(API_URL_GEO_DATA, {
             apikey: API_KEY_YANDEX,
             geocode: this.value,
             format: 'json'
-        }))
-        .then(resp => resp.json())
+        })
         .then(resp =>{
 
             // Обрабатываем ответ Yandex
@@ -89,20 +90,20 @@
                 const pos = GeoObject.Point.pos.split(' ')
 
                 // Собираем URL и делаем запрос к open-meteo
-                fetch(mkurl(API_URL_METEO_DATA, {
+                fetchurl(API_URL_METEO_DATA, {
                     latitude: pos[0],
                     longitude: pos[1],
                     hourly: 'pm10,pm2_5'
-                }))
-                .then(resp => resp.json())
+                })
                 .then(resp => {
                     resp.hourly.time.forEach(
 
                     // Заменяем время на локальное
-                    (element, ind) => {
-                        element = new Date(element)
-                        resp.hourly.time[ind] = (element.getHours() === 0 ? element.toLocaleDateString()+' ':'')+
-                                                 element.toLocaleTimeString().substring(0,5)
+                    (element) => {
+                        with(new Date(element)){
+                            element = (getHours() === 0 ? toLocaleDateString()+' ':'')+
+                                                     toLocaleTimeString().substring(0,5)
+                        }
                     })
                     return resp
                 })
@@ -112,19 +113,20 @@
                     fillTable(resp)
 
                     // Передаем данные в chart
-                    chart.data = {
-                        labels: resp.hourly.time,
-                        datasets:[
-                            {
-                                label: 'pm 2.5',
-                                data: resp.hourly.pm2_5
-                            },{
-                                label: 'pm 10',
-                                data: resp.hourly.pm10
-                            }
-                        ]
+                    with(resp.hourly){
+                        chart.data = {
+                            labels: time,
+                            datasets:[
+                                {
+                                    label: 'pm 2.5',
+                                    data: pm2_5
+                                },{
+                                    label: 'pm 10',
+                                    data: pm10
+                                }
+                            ]
+                        }
                     }
-
                     // Перерисовываем chart
                     chart.update()
                 })
