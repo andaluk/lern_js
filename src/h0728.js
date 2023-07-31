@@ -96,13 +96,13 @@
                     hourly: 'pm10,pm2_5'
                 })
                 .then(resp => {
-                    resp.hourly.time.forEach(
+                    resp.hourly.time = resp.hourly.time.map(
 
                     // Заменяем время на локальное
                     (element) => {
                         with(new Date(element)){
-                            element = (getHours() === 0 ? toLocaleDateString()+' ':'')+
-                                                     toLocaleTimeString().substring(0,5)
+                            return (getHours() === 0 ? toLocaleDateString()+' ':'')+
+                                       toLocaleTimeString().substring(0,5)
                         }
                     })
                     return resp
