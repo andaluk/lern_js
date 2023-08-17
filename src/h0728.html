@@ -5,50 +5,68 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Загрязнение воздуха</title>
     <style>
-        #meteo_data table{
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        body{
+            display: grid;
+            grid-template-columns: min-content max-content;
+            grid-template-rows: 2rem 2rem auto;
+            grid-template-areas:
+                "search search"
+                "place  place"
+                "table  chart";
+        }
+        div.search{
+            grid-area: search;
+            text-align: center;
+            vertical-align: middle;
+        }
+        div.meteo_place{
+            grid-area: place;
+            text-align: center;
+        }
+        table.meteo_table{
             border-collapse: collapse;
             border: 1px solid #aaa;
+            grid-area: table;
+            overflow-y: scroll;
         }
-        #meteo_data table td, #meteo_data table th{
+        table.meteo_table td, table.meteo_table th{
             padding: 3px 10px 3px 10px;
             text-align: center;
             border: solid #aaa;
             border-width: 1px 0px 1px 0px;
         }
-        #meteo_data table tr:nth-child(odd){
+        table.meteo_table tr:nth-child(odd){
             background-color: #cdf;
         }
-        #meteo_data table tr:nth-child(even){
+        table.meteo_table tr:nth-child(even){
             background-color: #def;
+        }
+        canvas.meteo_chart{
+            grid-area: chart;
         }
     </style>
 </head>
 <body>
-    <div style="text-align: center;">
+    <div class="search">
         <input type="text" id="search" autofocus />
     </div>
-    <table id="meteo_data" align="center">
-        <tr><th colspan="2">Местоположение: <span> </span></th></tr>
-        <tr>
-            <td style="text-align: right; vertical-align: top;">
-                
-                <table align="center">
-                    <tr>
-                        <th></th>
-                        <th></th>
-                        <th></th>
-                    </tr>
-                    <tr>
-                        <td style="text-align: right;"></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                </table>
+    <div class="meteo_place">Местоположение: <span> </span></div>
+    <canvas class="meteo_chart"></canvas>
 
-            </td>
-            <td style="vertical-align: top; text-align: left;">
-                <canvas width="800" height="600" id="canvas"></canvas>
-            </td>
+    <table align="center" class="meteo_table">
+        <tr>
+            <th></th>
+            <th></th>
+            <th></th>
+        </tr>
+        <tr>
+            <td style="text-align: right;"></td>
+            <td></td>
+            <td></td>
         </tr>
     </table>
 </body>

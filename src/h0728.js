@@ -12,10 +12,10 @@
     }
 
     // Устанавливает название местоположения
-    const placename = (n) => document.querySelector('#meteo_data th span').innerText = n
+    const placename = (n) => document.querySelector('.meteo_place span').innerText = n
     
     // Таблица в которую все выводится
-    const table = document.querySelector('#meteo_data table')
+    const table = document.querySelector('table.meteo_table')
     
     // Заполняем шаблоны
     const headTemplate = table.querySelector('tr:has(>th)').cloneNode(1)
@@ -56,7 +56,7 @@
     }
 
     // Находим график и его контекст
-    const canvas = document.getElementById("canvas");
+    const canvas = document.querySelector(".meteo_chart");
     // Создаем и настраиваем график
     const chart = new Chart(
         canvas,{
@@ -96,15 +96,48 @@
                     hourly: 'pm10,pm2_5'
                 })
                 .then(resp => {
+                    resp.hourly.avg2_5 = {}
+                    resp.hourly.avg10 = {}
+
                     resp.hourly.time = resp.hourly.time.map(
 
-                    // Заменяем время на локальное
-                    (element) => {
+                    
+                    (element,index) => {
                         with(new Date(element)){
-                            return (getHours() === 0 ? toLocaleDateString()+' ':'')+
-                                       toLocaleTimeString().substring(0,5)
+                            const l = toLocaleDateString()
+                            const t = toLocaleTimeString().substring(0,5)
+
+                            // Суммирует значения по датам и записывает в словарь
+                            const oper = (a,b) => {
+                                const l2 = l + " 12:00"
+                                if (a[l2] === undefined){
+                                    a[l2] = b[index]
+                                }else{
+                                    a[l2] += b[index]
+                                }
+                            }
+                            oper(resp.hourly.avg2_5, resp.hourly.pm2_5)
+                            oper(resp.hourly.avg10, resp.hourly.pm10)
+                            
+                            // Заменяем время на локальное
+                            return ( t == '00:00' | t == '12:00') ? l + ' ' + t : t
+                                   
                         }
                     })
+                    // Преобразует словарь сумм по датам в массив объектов с "x" и "y",
+                    // где y - среднее за сутки
+                    const oper = a => {
+                        const r = []
+                        Object.keys(a).forEach((e,i)=>{
+                            r[i] = {
+                                x: e,
+                                y: a[e] / 24
+                            }
+                        })
+                        return r
+                    }
+                    resp.hourly.avg2_5 = oper(resp.hourly.avg2_5)
+                    resp.hourly.avg10 = oper(resp.hourly.avg10)
                     return resp
                 })
                 .then( resp =>{
@@ -118,11 +151,29 @@
                             labels: time,
                             datasets:[
                                 {
+                                    type: 'line',
                                     label: 'pm 2.5',
+                                    borderColor: '#ff9999',
+                                    backgroundColor: '#ff9999',
                                     data: pm2_5
                                 },{
+                                    type: 'line',
                                     label: 'pm 10',
+                                    borderColor: '#9999ff',
+                                    backgroundColor: '#9999ff',
                                     data: pm10
+                                },{
+                                    type: 'bar',
+                                    label: 'Среднесуточный pm 2.5',
+                                    borderColor: '#ff999999',
+                                    backgroundColor: '#ff999999',
+                                    data: avg2_5
+                                },{
+                                    type: 'bar',
+                                    label: 'Среднесуточный pm 10',
+                                    borderColor: '#9999ff99',
+                                    backgroundColor: '#9999ff99',
+                                    data: avg10
                                 }
                             ]
                         }
