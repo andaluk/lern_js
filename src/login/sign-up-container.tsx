@@ -11,7 +11,7 @@ import {
 import { Social } from "./";
 import "./input.scss";
 
-export const SinUpContainer = () => {
+export const SignUpContainer = () => {
   // Имя пользователя при регистрации
   const [Name, setName] = useState("");
 
@@ -40,7 +40,7 @@ export const SinUpContainer = () => {
           !Pass1, // Пустой пароль
           !Pass2, // Пароль не повторили
           Pass1 !== Pass2, // Пароли не совпадают
-          
+
         ].indexOf(true) + 1, // Если не найдено вернет -1, а это соответствует нулевой ошибке
       );
     },
@@ -84,7 +84,7 @@ export const SinUpContainer = () => {
         {Err ? (
           <div className="errMessage">{errMsg[Err]}</div>
         ) : (
-          <input type="submit" className="button" value={sUp} />
+          <button>{sUp}</button>
         )}
       </form>
     </div>

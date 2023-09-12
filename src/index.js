@@ -1,9 +1,20 @@
 import { createRoot } from "react-dom/client";
-import Login from "./login";
 import reportWebVitals from "./reportWebVitals";
 import "./index.scss";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Login from "./login";
+import Err404 from "./e404";
+import Weather from "./weather";
 
-createRoot(document.getElementById("root")).render(<Login />);
+createRoot(document.getElementById("root")).render(
+  <BrowserRouter>
+    <Routes>
+      <Route path="/" element={<Weather />}/>
+        <Route path="/login" element={<Login />} />
+        <Route path="*" element={<Err404 />} />
+    </Routes>
+  </BrowserRouter>,
+);
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))

@@ -3,7 +3,7 @@ import { sIn, pMail, pPass, errMsg, mailRegExp } from "../const";
 import { Social } from "./";
 import "./input.scss";
 
-export const SinInContainer = () => {
+export const SignInContainer = () => {
   // Почта при входе
   const [Mail, setMail] = useState("");
 
@@ -25,7 +25,7 @@ export const SinInContainer = () => {
           // Проверка формата почты
           !mailRegExp(Mail),
           !Pass, // Пустой пароль
-          
+
         ].indexOf(true) + 1, // Если не найдено вернет -1, а это соответствует нулевой ошибке
       );
     },
@@ -55,7 +55,7 @@ export const SinInContainer = () => {
         {Err ? (
           <div className="errMessage">{errMsg[Err]}</div>
         ) : (
-          <input type="submit" className="button" value={sIn} />
+          <button>{sIn}</button>
         )}
       </form>
     </div>
