@@ -18,13 +18,14 @@ body {
   color: $textColor;
 }
 $ghost: ghost;
-button {
+input.button {
     border-radius: 20px;
     border: 1px solid $frontColor;
     background-color: $frontColor;
     color: $backColor;
     font-size: 12px;
     font-weight: bold;
+    width: auto;
     padding: 12px 45px;
     letter-spacing: 1px;
     text-transform: uppercase;
