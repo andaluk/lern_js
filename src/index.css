@@ -1,0 +1,89 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  font-size: 4mm;
+}
+body,
+html {
+  height: 100vh;
+  overflow: hidden;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+.header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+  gap: 4ex;
+  width: 100%;
+  padding: 5px;
+  background-color: rgb(3, 73, 123);
+  font-weight: bold;
+  color: white;
+  font-family: sans-serif;
+  input,
+  input:focus-visible {
+    margin-left: auto;
+    width: 20ex;
+    border: 0;
+    outline: 0;
+    background-color: white;
+  }
+  input::placeholder {
+    color: gray;
+  }
+  a,
+  a:active,
+  a:visited {
+    text-decoration: none;
+    color: inherit;
+  }
+}
+.gallery {
+  display: grid;
+  width: 100%;
+  height: inherit;
+  position: relative;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(4, 1fr);
+  /* grid-auto-rows: 25%; */
+  img {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+    position: relative;
+  }
+  :nth-child(1) {
+    grid-area: 1 / 1 / span 2 / span 2;
+  }
+  :nth-child(2) {
+    grid-area: 1 / 3 / span 1 / span 1;
+  }
+  :nth-child(3) {
+    grid-area: 1 / 4 / span 2 / span 1;
+  }
+  :nth-child(4) {
+    grid-area: 2 / 3 / span 1 / span 1;
+  }
+  :nth-child(5) {
+    grid-area: 3 / 1 / span 2 / span 1;
+  }
+  :nth-child(6) {
+    grid-area: 4 / 2 / span 1 / span 1;
+  }
+  :nth-child(7) {
+    grid-area: 3 / 2 / span 1 / span 3;
+  }
+  :nth-child(8) {
+    grid-area: 4 / 3 / span 1 / span 1;
+  }
+  :nth-child(9) {
+    grid-area: 4 / 4 / span 1 / span 1;
+  }
+}
