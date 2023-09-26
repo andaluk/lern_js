@@ -1,12 +1,11 @@
 @charset "UTF-8";
-@import "../const/color.scss";
+@import "../../const/color.scss";
 
 .loginContainer {
 	input {
 		background-color: rgba($color: $textColor, $alpha: 20%);
 		border: none;
 		padding: 12px 15px;
-		margin: 8px 0;
 		width: 100%;
 	}
 }

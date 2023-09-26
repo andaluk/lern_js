@@ -7,7 +7,7 @@ import {
   errMsg,
   nameRegExp,
   mailRegExp,
-} from "../const";
+} from "../../const";
 import { Social } from "./";
 import "./input.scss";
 
@@ -47,38 +47,42 @@ export const SignUpContainer = () => {
     // Выполняется при изменении следующих состояний
     [Name, Mail, Pass1, Pass2],
   );
+  const NameHandler = (e:{target:{value:string}}) => setName(e.target.value)
+  const MailHandler = (e:{target:{value:string}}) => setMail(e.target.value)
+  const Pass1Handler = (e:{target:{value:string}}) => setPass1(e.target.value)
+  const Pass2Handler = (e:{target:{value:string}}) => setPass2(e.target.value)
   return (
     <div className="form-container sign-up-container">
       <form action="#">
-        <h1>Соаздайте пользователя</h1>
+        <h2>Соаздайте пользователя</h2>
         <Social />
 
         <input // Имя
           type="text"
           placeholder={pName}
           /* Устанавливаем состояние "Имя" */
-          onChange={(e) => setName(e.target.value)}
+          onChange={NameHandler}
         />
 
         <input // Почта
           type="email"
           placeholder={pMail}
           // Устанавливаем состояние "Почта"
-          onChange={(e) => setMail(e.target.value)}
+          onChange={MailHandler}
         />
 
         <input // Пароль
           type="password"
           placeholder={pPass}
           // Устанавливаем состояние "Пароль"
-          onChange={(e) => setPass1(e.target.value)}
+          onChange={Pass1Handler}
         />
 
         <input // Повтор пароля
           type="password"
           placeholder={pPass}
           // Устанавливаем состояние "Повтор пароля"
-          onChange={(e) => setPass2(e.target.value)}
+          onChange={Pass2Handler}
         />
 
         {Err ? (

@@ -1,7 +1,37 @@
 @charset "UTF-8";
-@import "../const/color.scss";
+@import "../../const/color.scss";
 
-.msgFrame {
+.loginFrame {
+    overflow: hidden;
+    width: 768px;
+    max-width: 100%;
+    min-height: 480px;
+
+    form {
+        background-color: $backColor;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        padding: 0 50px;
+        height: 100%;
+        text-align: center;
+        gap: 10px;
+    }
+
+    a {
+        color: $textColor;
+        font-size: 14px;
+        text-decoration: none;
+    }
+
+    input {
+        background-color: rgba($color: $textColor, $alpha: 20%);
+        border: none;
+        padding: 12px 15px;
+        width: 100%;
+    }
+
     &.right-panel-active {
         .sign-in-container {
             transform: translateX(100%);
@@ -116,11 +146,47 @@
         right: 0;
         transform: translateX(0);
     }
+
     .errMessage {
         color: $errColor;
-        margin: 9px 0;
         padding: 12px 10px;
-        font-size: 12px;
+        font-size: 80%;
         font-weight: bold;
     }
+
+    $ghost: ghost;
+
+    button {
+        border-radius: 20px;
+        border: 1px solid $frontColor;
+        background-color: $frontColor;
+        color: $backColor;
+        font-size: 12px;
+        font-weight: bold;
+        width: auto;
+        padding: 12px 45px;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        transition: transform 80ms ease-in;
+
+        &:active {
+            transform: scale(0.95);
+        }
+
+        &:focus {
+            outline: none;
+        }
+
+        &.#{$ghost} {
+            background-color: transparent;
+            border-color: $backColor;
+        }
+    }
+
+}
+
+body:has(.loginFrame) {
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
 }

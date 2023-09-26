@@ -1,0 +1,36 @@
+@charset "UTF-8";
+@import "../const/color.scss";
+
+.menuBar {
+    position: absolute;
+    width: 42px;
+    height: 42px;
+    overflow: hidden;
+    background-color: $backColor;
+    border: 1px solid $textColor;
+    top: 5px;
+    left: 5px;
+    z-index: 5;
+
+    &:hover {
+        overflow: visible;
+        width: auto;
+        height: auto;
+    }
+
+    a {
+        display: block;
+        margin: 5px;
+    }
+
+    a,
+    a:visited,
+    a:active,
+    a:hover {
+        color: $textColor;
+    }
+
+    a.active {
+        color: $errColor
+    }
+}

@@ -1,10 +1,7 @@
 @charset "UTF-8";
-@import "../const/color.scss";
+@import "../../const/color.scss";
 
 .msgFrame {
-	.social-container {
-		margin: 20px 0;
-	}
 
 	.social-container a {
 		border: 1px solid $textColor;

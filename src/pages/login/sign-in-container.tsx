@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { sIn, pMail, pPass, errMsg, mailRegExp } from "../const";
+import { sIn, pMail, pPass, errMsg, mailRegExp } from "../../const";
 import { Social } from "./";
 import "./input.scss";
 
@@ -32,24 +32,26 @@ export const SignInContainer = () => {
     // Выполняется при изменении следующих состояний
     [Mail, Pass],
   );
+  const onMailHandler = (e:{target:{value:string}}) => setMail(e.target.value)
+  const onPassHandler = (e:{target:{value:string}}) => setPass(e.target.value)
   return (
     <div className="form-container sign-in-container">
       <form action="#">
-        <h1>Вход</h1>
+        <h2>Вход</h2>
         <Social />
 
         <input // Почта
           type="email"
           placeholder={pMail}
           // Устанавливаем состояние "Почта"
-          onChange={(e) => setMail(e.target.value)}
+          onChange={onMailHandler}
         />
 
         <input // Пароль
           type="password"
           placeholder={pPass}
           // Устанавливаем состояние "Пароль"
-          onChange={(e) => setPass(e.target.value)}
+          onChange={onPassHandler}
         />
 
         {Err ? (

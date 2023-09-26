@@ -1,17 +1,20 @@
+import React from "react";
 import { createRoot } from "react-dom/client";
 import reportWebVitals from "./reportWebVitals";
 import "./index.scss";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Login from "./login";
-import Err404 from "./e404";
-import Weather from "./weather";
+import Login from "./pages/login";
+import Err404 from "./pages/e404";
+import Weather from "./pages/weather";
+import About from "./pages/about";
 
-createRoot(document.getElementById("root")).render(
+createRoot(document.getElementById("root")!).render(
   <BrowserRouter>
     <Routes>
-      <Route path="/" element={<Weather />}/>
-        <Route path="/login" element={<Login />} />
-        <Route path="*" element={<Err404 />} />
+      <Route path="/" Component={Weather} />
+      <Route path="/login" Component={Login} />
+      <Route path="/about" Component={About} />
+      <Route path="*" Component={Err404} />
     </Routes>
   </BrowserRouter>,
 );

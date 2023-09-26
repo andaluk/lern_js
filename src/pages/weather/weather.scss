@@ -1,0 +1,25 @@
+@charset "UTF-8";
+@import "../../const/color.scss";
+
+.weatherData {
+    width: calc((5ex * 24 + 10ex)*0.8 + 5px*24);
+    height: calc((1em + 3px) * 15 + 40px + 3px);
+    overflow: visible;
+
+    table {
+        font-size: 80%;
+        width: 100%;
+        border-collapse: collapse;
+        border-spacing: 0;
+
+        td,
+        th {
+            text-align: center;
+            border: lighten($textColor, 35%) 1px solid;
+        }
+
+        td {
+            min-width: 34px;
+        }
+    }
+}

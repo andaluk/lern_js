@@ -2,48 +2,32 @@
 @import "./const/color.scss";
 @import url('https://fonts.googleapis.com/css?family=Montserrat:400,800');
 @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css');
+
 * {
-	box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+html,
+body {
+    height: 100vh;
+    height: 100vh;
 }
 
 body {
-  background: lighten($textColor, 35%);
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	flex-direction: column;
-	font-family: 'Montserrat', sans-serif;
-	height: 100vh;
-	margin: -20px 0 50px;
-  color: $textColor;
+    background: lighten($textColor, 35%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 16px;
+    //height: 100vh;
+    color: $textColor;
+    gap: 20px;
 }
-$ghost: ghost;
-button {
-    border-radius: 20px;
-    border: 1px solid $frontColor;
-    background-color: $frontColor;
-    color: $backColor;
-    font-size: 12px;
-    font-weight: bold;
-    width: auto;
-    padding: 12px 45px;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    transition: transform 80ms ease-in;
 
-    &:active {
-        transform: scale(0.95);
-    }
 
-    &:focus {
-        outline: none;
-    }
-
-    &.#{$ghost} {
-        background-color: transparent;
-        border-color: $backColor;
-    }
-}
+/*
 footer {
     background-color: $textColor;
     color: $backColor;
@@ -68,60 +52,34 @@ footer {
         text-decoration: none;
     }
 }
+*/
+h1,
+h2 {
+    font-weight: bold;
+    margin: 15px;
+    text-align: center;
+}
+
 h1 {
-	font-weight: bold;
-	margin: 0;
+    font-size: 170%;
 }
 
 h2 {
-	text-align: center;
+    font-size: 140%;
 }
 
 p {
-	font-size: 14px;
-	font-weight: 100;
-	line-height: 20px;
-	letter-spacing: 0.5px;
-	margin: 20px 0 30px;
+    font-weight: 100;
+    line-height: 150%;
+    letter-spacing: 0.5px;
 }
 
-span {
-	font-size: 12px;
-}
-
-a {
-	color: $textColor;
-	font-size: 14px;
-	text-decoration: none;
-	margin: 15px 0;
-}
-
-form {
-	background-color: $backColor;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	flex-direction: column;
-	padding: 0 50px;
-	height: 100%;
-	text-align: center;
-}
-
-input {
-	background-color: rgba($color: $textColor, $alpha: 20%);
-	border: none;
-	padding: 12px 15px;
-	margin: 8px 0;
-	width: 100%;
-}
 .msgFrame {
     background-color: $backColor;
     border-radius: 10px;
     box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25),
         0 10px 10px rgba(0, 0, 0, 0.22);
     position: relative;
-    overflow: hidden;
-    width: 768px;
-    max-width: 100%;
-    min-height: 480px;
+    padding: 20px;
+    margin: 20px;
 }
