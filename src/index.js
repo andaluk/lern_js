@@ -28,6 +28,28 @@ const actionCreaterAddEvent = (eventInfo) => {
     payload: eventInfoFull,
   };
 };
+
+const actionCreaterRemoveEvent = (eventNum) => {
+  return {
+    type: ACTIONS.REMOVE_EVENT,
+    payload: eventNum,
+  };
+};
+
+const actionCreaterUpdateEvent = (eventNum, eventInfo) => {
+  return {
+    type: ACTIONS.UPDATE_EVENT,
+    payload: [eventNum, eventInfo],
+  };
+};
+
+const actionCreaterSortEvent = (directionAsc = true) => {
+  return {
+    type: ACTIONS.SORT_EVENT,
+    payload: directionAsc,
+  };
+};
+
 const initialStateEvents = {
   eventsWorld: ['Событие 1'],
 };
@@ -38,28 +60,33 @@ const initialStateEvents = {
 const reducerEvents = (state = initialStateEvents, action) => {
   switch (action.type) {
     case ACTIONS.ADD_EVENT:
-      const newPartState = [...state.eventsWorld];
-      newPartState.push(action.payload.text);
       const newState = {
         ...state,
-        eventsWorld: newPartState,
+        // сделал короче
+        eventsWorld: [...state.eventsWorld, action.payload.text],
       };
       return newState;
-    // case ACTIONS.REMOVE_EVENT:
-    // return {
-    // ...state,
-    // eventsWorld
-    // }
-    // case ACTIONS.UPDATE_EVENT:
-    // return {
-    // ...state,
-    // eventsWorld
-    // }
-    // case ACTIONS.SORT_EVENT:
-    // return {
-    // ...state,
-    // eventsWorld
-    // }
+    case ACTIONS.REMOVE_EVENT:
+      return {
+        ...state,
+        // array.filter создает новый массив
+        eventsWorld: state.eventsWorld.filter((v, i) => i !== action.payload),
+      };
+    case ACTIONS.UPDATE_EVENT:
+      const [ai, av] = action.payload;
+      return {
+        ...state,
+        // array.map создает новый массив
+        eventsWorld: state.eventsWorld.map((v, i) => (i === ai ? av : v)),
+      };
+    case ACTIONS.SORT_EVENT:
+      return {
+        ...state,
+        // array.sort сортирует на месте, надо создать новый массив
+        eventsWorld: [...state.eventsWorld].sort((a, b) =>
+          action.payload ? a.localeCompare(b) : b.localeCompare(a)
+        ),
+      };
     default:
       return {
         ...state,
@@ -103,3 +130,15 @@ store.dispatch({ type: ACTIONS.ADD_EVENT, payload: { text: 'Событие 3' } 
 store.dispatch({ type: ACTIONS.ADD_EVENT, payload: { text: 'Событие 4' } });
 store.dispatch(actionCreaterAddEvent({ text: 'Событие 88' }));
 console.log('store после', store.getState());
+
+store.dispatch(actionCreaterRemoveEvent(2));
+console.log('store после remove', store.getState());
+
+store.dispatch(actionCreaterUpdateEvent(2, 'Событие 33'));
+console.log('store после update', store.getState());
+
+store.dispatch(actionCreaterSortEvent(false));
+console.log('store после sort по убыванию', store.getState());
+
+store.dispatch(actionCreaterSortEvent());
+console.log('store после sort по возрастанию', store.getState());
