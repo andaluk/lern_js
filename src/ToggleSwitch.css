@@ -1,0 +1,25 @@
+div.ToggleSwitch {
+  display: inline-flex;
+  border: 2px solid blue;
+  justify-content: flex-start;
+  align-items: center;
+  border-radius: 1em;
+  width: 2em;
+  height: 1em;
+  padding: 2px;
+  box-shadow: inset 0.3em 0.5em 0.5em rgb(220, 220, 220);
+  background-color: white;
+  div {
+    border: 2px solid blue;
+    border-radius: 1em;
+    width: 1em;
+    height: 1em;
+    font-size: calc(1em - 4px);
+    box-shadow: inset -0.3em -0.3em 0.3em rgb(220, 220, 220);
+    background-color: white;
+  }
+  &.on {
+    justify-content: flex-end;
+    box-shadow: inset 0.3em 0.5em 0.7em rgb(255, 135, 199);
+  }
+}
