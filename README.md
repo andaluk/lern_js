@@ -1,18 +1,23 @@
-# Getting Started with Create React App
+# Аттестационная работа 1
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
+## Доступные скрипты
 
-In the project directory, you can run:
+В директории проекта можно запустит:
 
-### `npm start`
+### `npm run start:frontend`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Запускает фронтенд в режиме отладки.\
+Открывается [http://localhost:3000](http://localhost:3000) в браузере.
 
 The page will reload when you make changes.\
 You may also see any lint errors in the console.
+
+### `npm run start:backend`
+
+Запускает бакенд сервер.\
+Слушает [http://localhost:3001](http://localhost:3001).
 
 ### `npm test`
 
