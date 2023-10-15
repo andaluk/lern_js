@@ -5,54 +5,29 @@
 
 * {
     box-sizing: border-box;
+    margin: 0;
 }
 
 html,
-body {
+body,
+#root {
     height: 100vh;
-    height: 100vh;
-}
-
-body {
     background: lighten($textColor, 35%);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
     font-family: 'Montserrat', sans-serif;
     font-size: 16px;
     //height: 100vh;
     color: $textColor;
+}
+
+#root,
+.weather {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
     gap: 20px;
 }
 
-
-/*
-footer {
-    background-color: $textColor;
-    color: $backColor;
-    font-size: 14px;
-    bottom: 0;
-    position: fixed;
-    left: 0;
-    right: 0;
-    text-align: center;
-    z-index: 999;
-
-    p {
-        margin: 10px 0;
-    }
-
-    i {
-        color: $frontColor;
-    }
-
-    a {
-        color: $textColor;
-        text-decoration: none;
-    }
-}
-*/
 h1,
 h2 {
     font-weight: bold;
@@ -81,5 +56,4 @@ p {
         0 10px 10px rgba(0, 0, 0, 0.22);
     position: relative;
     padding: 20px;
-    margin: 20px;
 }

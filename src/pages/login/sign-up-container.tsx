@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   sUp,
   pMail,
@@ -7,25 +8,28 @@ import {
   errMsg,
   nameRegExp,
   mailRegExp,
-} from "../../const";
-import { Social } from "./";
-import "./input.scss";
+  LOGIN_URL,
+} from '../../const';
+import { Social } from './';
+import './input.scss';
 
 export const SignUpContainer = () => {
   // Имя пользователя при регистрации
-  const [Name, setName] = useState("");
+  const [Name, setName] = useState('');
 
   // Почта при регистрации
-  const [Mail, setMail] = useState("");
+  const [Mail, setMail] = useState('');
 
   // Пароль при регистрации
-  const [Pass1, setPass1] = useState("");
+  const [Pass1, setPass1] = useState('');
 
   // Повторение пароля при регистрации
-  const [Pass2, setPass2] = useState("");
+  const [Pass2, setPass2] = useState('');
 
   // Сообщение о ошибке при валидации
   const [Err, setErr] = useState(1);
+
+  const navigate = useNavigate();
 
   // Валидация формы регистрации
   useEffect(
@@ -40,53 +44,79 @@ export const SignUpContainer = () => {
           !Pass1, // Пустой пароль
           !Pass2, // Пароль не повторили
           Pass1 !== Pass2, // Пароли не совпадают
-
-        ].indexOf(true) + 1, // Если не найдено вернет -1, а это соответствует нулевой ошибке
+        ].indexOf(true) + 1 // Если не найдено вернет -1, а это соответствует нулевой ошибке
       );
     },
     // Выполняется при изменении следующих состояний
-    [Name, Mail, Pass1, Pass2],
+    [Name, Mail, Pass1, Pass2]
   );
-  const NameHandler = (e:{target:{value:string}}) => setName(e.target.value)
-  const MailHandler = (e:{target:{value:string}}) => setMail(e.target.value)
-  const Pass1Handler = (e:{target:{value:string}}) => setPass1(e.target.value)
-  const Pass2Handler = (e:{target:{value:string}}) => setPass2(e.target.value)
+
+  // Обработчик изменения поля имени
+  const NameHandler = (e: { target: { value: string } }) =>
+    setName(e.target.value);
+
+  // Обработчик изменения поля почты
+  const MailHandler = (e: { target: { value: string } }) =>
+    setMail(e.target.value);
+
+  // Обработчик изменения поля первого пароля
+  const Pass1Handler = (e: { target: { value: string } }) =>
+    setPass1(e.target.value);
+
+  // Обработчик изменения поля второго пароля
+  const Pass2Handler = (e: { target: { value: string } }) =>
+    setPass2(e.target.value);
+
+  // Обработчик запроса регистрации
+  const submitHandler = (e: any) => {
+    e.preventDefault();
+    fetch(
+      `${LOGIN_URL}/user?${new URLSearchParams({
+        login: Name,
+        email: Mail,
+        pass: Pass1,
+      })}`
+    )
+      .then((resp) => resp.json())
+      .then(() => navigate('/'))
+      .catch((resp) => console.error('Sign Up filed. ' + resp));
+  };
   return (
-    <div className="form-container sign-up-container">
-      <form action="#">
+    <div className='form-container sign-up-container'>
+      <form onSubmit={submitHandler}>
         <h2>Соаздайте пользователя</h2>
         <Social />
 
         <input // Имя
-          type="text"
+          type='text'
           placeholder={pName}
           /* Устанавливаем состояние "Имя" */
           onChange={NameHandler}
         />
 
         <input // Почта
-          type="email"
+          type='email'
           placeholder={pMail}
           // Устанавливаем состояние "Почта"
           onChange={MailHandler}
         />
 
         <input // Пароль
-          type="password"
+          type='password'
           placeholder={pPass}
           // Устанавливаем состояние "Пароль"
           onChange={Pass1Handler}
         />
 
         <input // Повтор пароля
-          type="password"
+          type='password'
           placeholder={pPass}
           // Устанавливаем состояние "Повтор пароля"
           onChange={Pass2Handler}
         />
 
         {Err ? (
-          <div className="errMessage">{errMsg[Err]}</div>
+          <div className='errMessage'>{errMsg[Err]}</div>
         ) : (
           <button>{sUp}</button>
         )}

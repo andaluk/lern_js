@@ -1,6 +1,7 @@
 import { NavLink } from 'react-router-dom';
 import './menu.scss';
 
+// Общее меню
 export const Menu = () => (
   <nav className='menuBar'>
     <img
@@ -8,8 +9,9 @@ export const Menu = () => (
       alt='Menu'
       title='Меню'
     />
-    <NavLink to='/'>Домой</NavLink>
     <NavLink to='/login'>Вход</NavLink>
+    <NavLink to='/'>Домой</NavLink>
     <NavLink to='/about'>О программе</NavLink>
+    <NavLink to='/e404'>Ошибка 404</NavLink>
   </nav>
 );

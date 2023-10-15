@@ -1,9 +1,13 @@
-import React from "react";
-import "./social.scss";
+import React from 'react';
+import './social.scss';
 
-const Sa = ({ href = "#", className = "" }) => {
+/**
+ * Рисуем ссылки на социальные сети
+ */
+
+const Sa = ({ href = '#', className = '' }) => {
   return (
-    <a href={href} className="social">
+    <a href={href} className='social'>
       <i className={`fab ${className}`} />
     </a>
   );
@@ -11,10 +15,10 @@ const Sa = ({ href = "#", className = "" }) => {
 
 export const Social = () => {
   return (
-    <div className="social-container">
-      <Sa className="fa-facebook-f" />
-      <Sa className="fa-google-plus-g" />
-      <Sa className="fa-linkedin-in" />
+    <div className='social-container'>
+      <Sa className='fa-facebook-f' />
+      <Sa className='fa-google-plus-g' />
+      <Sa className='fa-linkedin-in' />
     </div>
   );
 };

@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
-import { SignUpContainer, SignInContainer } from './';
+import { SignUpContainer, SignInContainer, AppFrame } from './';
 import { sIn, sUp, ghClass } from '../../const';
 import './login.scss';
-import { AppFrame } from '../../components';
 
 const Login = () => {
   // Форма переключена на регистрацию
   const [isSignUp, setSignUp] = useState(false);
+  // Обработчик перехода на форму входа
   const ButtonSinClickHandler = () => setSignUp(false);
+  // Обработчик перехода на форму регистрации
   const ButtonSupClickHandler = () => setSignUp(true);
   return (
     <>

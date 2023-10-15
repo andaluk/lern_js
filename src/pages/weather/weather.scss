@@ -1,8 +1,21 @@
 @charset "UTF-8";
 @import "../../const/color.scss";
 
-.weatherData {
+
+.weather {
+    height: 100vh;
+    overflow: auto;
+    width: 100%;
+    justify-content: start;
+}
+
+.weatherData,
+.weatherInput,
+.weatherChart {
     width: calc((5ex * 24 + 10ex)*0.8 + 5px*24);
+}
+
+.weatherData {
     height: calc((1em + 3px) * 15 + 40px + 3px);
     overflow: visible;
 
