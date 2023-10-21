@@ -1,26 +1,45 @@
-import { useContext } from 'react';
-import { GeoObjectContext, WeatherDataContext } from './';
 import {
   API_KEY_YANDEX,
   API_URL_GEO_DATA,
   API_URL_METEO_DATA,
   DEBOUNCER_TIMEOUT,
 } from '../../const';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  geoObjectType,
+  setGeoObject as setGeoObjectAction,
+  clearGeoObject as clearGeoObjectAction,
+  setWeatherData as setWeatherDataAction,
+  clearWeatherData as clearWeatherDataAction,
+  weatherDataType,
+} from '../../slices';
+import store from '../../store';
 
 export const GeoObjectSearch = () => {
+  const dispatch = useDispatch();
   // Контекст найденного географического объекта
-  const [geoObject, setGeoObject] = useContext(GeoObjectContext);
+  //const [geoObject, setGeoObject] = useContext(GeoObjectContext);
+  const geoObjectSelector = (state: ReturnType<typeof store.getState>) => {
+    return state.Reducer.geoObjectReducer.geoObject;
+  };
+  const geoObject = useSelector(geoObjectSelector);
+  const setGeoObject = (data: geoObjectType) =>
+    dispatch(setGeoObjectAction(data));
+  const clearGeoObject = () => dispatch(clearGeoObjectAction());
 
   // Контекст данных сервиса погоды
-  const [, setWeatherData] = useContext(WeatherDataContext);
+  //const [, setWeatherData] = useContext(WeatherDataContext);
+  const setWeatherData = (data: weatherDataType) =>
+    dispatch(setWeatherDataAction(data));
+  const clearWeatherData = () => dispatch(clearWeatherDataAction());
 
   // Идентификатор таймера для задержки вывода
   let timer = setTimeout(() => {});
 
   // Очищает данные в контекстах
   const cleanData = () => {
-    setGeoObject!(undefined);
-    setWeatherData!(undefined);
+    clearGeoObject();
+    clearWeatherData();
   };
 
   // Собирает запрс из базового URL и словаря параметров,

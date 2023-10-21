@@ -1,8 +1,12 @@
-import React, { useContext } from 'react';
-import { WeatherDataContext } from './';
+import React from 'react';
+import { useSelector } from 'react-redux';
+import store from '../../store';
 
 export const WeatherTable = () => {
-  const [weatherData] = useContext(WeatherDataContext);
+  const weatherData = useSelector(
+    (state: ReturnType<typeof store.getState>) =>
+      state.Reducer.weatherDataReducer.weatherData
+  );
   const hourly = weatherData ? weatherData.hourly : undefined;
   return (
     <>

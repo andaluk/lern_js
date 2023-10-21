@@ -9,12 +9,14 @@ import {
   Legend,
 } from 'chart.js';
 import { Line } from 'react-chartjs-2';
-
-import { useContext } from 'react';
-import { WeatherDataContext } from './';
+import { useSelector } from 'react-redux';
+import store from '../../store';
 
 export const WeatherChart = () => {
-  const [weatherData] = useContext(WeatherDataContext);
+  const weatherData = useSelector(
+    (state: ReturnType<typeof store.getState>) =>
+      state.Reducer.weatherDataReducer.weatherData
+  );
   ChartJS.register(
     CategoryScale,
     LinearScale,
