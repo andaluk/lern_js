@@ -42,11 +42,11 @@ export const SignInContainer = () => {
   )
 
   // Обработчик изменения поля почты
-  const onMailHandler = (e: { target: { value: string } }) =>
+  const onMailHandler = (e: React.ChangeEvent<HTMLInputElement>) =>
     setMail(e.target.value)
 
   // Обработчик изменения поля пароля
-  const onPassHandler = (e: { target: { value: string } }) =>
+  const onPassHandler = (e: React.ChangeEvent<HTMLInputElement>) =>
     setPass(e.target.value)
 
   // Получаем функцию запроса данных о пользователе и другие параметры
@@ -72,7 +72,7 @@ export const SignInContainer = () => {
   }
 
   // Обработчик операции входа
-  const submitHandler = (e: any) => {
+  const submitHandler = (e: React.FormEvent<HTMLFormElement>) => {
     // Без этого последующий запрос блокируется (в Firefox)
     e.preventDefault()
     loginDataQuery({ email: Mail, pass: Pass })

@@ -57,19 +57,19 @@ export const SignUpContainer = () => {
   )
 
   // Обработчик изменения поля имени
-  const NameHandler = (e: { target: { value: string } }) =>
+  const NameHandler = (e: React.ChangeEvent<HTMLInputElement>) =>
     setName(e.target.value)
 
   // Обработчик изменения поля почты
-  const MailHandler = (e: { target: { value: string } }) =>
+  const MailHandler = (e: React.ChangeEvent<HTMLInputElement>) =>
     setMail(e.target.value)
 
   // Обработчик изменения поля первого пароля
-  const Pass1Handler = (e: { target: { value: string } }) =>
+  const Pass1Handler = (e: React.ChangeEvent<HTMLInputElement>) =>
     setPass1(e.target.value)
 
   // Обработчик изменения поля второго пароля
-  const Pass2Handler = (e: { target: { value: string } }) =>
+  const Pass2Handler = (e: React.ChangeEvent<HTMLInputElement>) =>
     setPass2(e.target.value)
 
   // Получаем функцию запроса данных о пользователе и другие параметры
@@ -95,7 +95,7 @@ export const SignUpContainer = () => {
   }
 
   // Обработчик запроса регистрации
-  const submitHandler = (e: any) => {
+  const submitHandler = (e: React.FormEvent<HTMLFormElement>) => {
     // Без этого последующий запрос блокируется (в Firefox)
     e.preventDefault()
     logonDataQuery({ Name, Mail, Pass1 })
