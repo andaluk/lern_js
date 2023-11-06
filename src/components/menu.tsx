@@ -1,5 +1,5 @@
-import { NavLink } from 'react-router-dom';
-import './menu.scss';
+import { NavLink } from 'react-router-dom'
+import './menu.scss'
 
 // Общее меню
 export const Menu = () => (
@@ -14,4 +14,4 @@ export const Menu = () => (
     <NavLink to='/about'>О программе</NavLink>
     <NavLink to='/e404'>Ошибка 404</NavLink>
   </nav>
-);
+)

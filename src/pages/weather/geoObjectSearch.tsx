@@ -1,9 +1,4 @@
-import {
-  API_KEY_YANDEX,
-  API_URL_GEO_DATA,
-  API_URL_METEO_DATA,
-  DEBOUNCER_TIMEOUT,
-} from '../../const';
+import { DEBOUNCER_TIMEOUT } from '../../const';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   geoObjectType,
@@ -12,106 +7,67 @@ import {
   setWeatherData as setWeatherDataAction,
   clearWeatherData as clearWeatherDataAction,
   weatherDataType,
+  setGeoSearch as setGeoSearchAction,
+  geoSearchSelector,
 } from '../../slices';
-import store from '../../store';
+import { useGetWeatherDataQuery } from '../../services/getWeatherDataQuery';
+import { useGetGeoObjectQuery } from '../../services/getGeoObjectQuery';
 
 export const GeoObjectSearch = () => {
+  // Получаем диспетчер хранилища
   const dispatch = useDispatch();
-  // Контекст найденного географического объекта
-  //const [geoObject, setGeoObject] = useContext(GeoObjectContext);
-  const geoObjectSelector = (state: ReturnType<typeof store.getState>) => {
-    return state.Reducer.geoObjectReducer.geoObject;
-  };
-  const geoObject = useSelector(geoObjectSelector);
+
+  // Получаем значение и функцию изменения поисковой строки в хранилище
+  const geoSearch = useSelector(geoSearchSelector);
+  const setGeoSearch = (data: string) => dispatch(setGeoSearchAction(data));
+
+  // Получаем функции изменения и сброса
+  // данных о географическом объекте
   const setGeoObject = (data: geoObjectType) =>
     dispatch(setGeoObjectAction(data));
   const clearGeoObject = () => dispatch(clearGeoObjectAction());
 
-  // Контекст данных сервиса погоды
-  //const [, setWeatherData] = useContext(WeatherDataContext);
+  // Получаем функции изменения и сброса данных
+  // о загрязнении
   const setWeatherData = (data: weatherDataType) =>
     dispatch(setWeatherDataAction(data));
   const clearWeatherData = () => dispatch(clearWeatherDataAction());
 
   // Идентификатор таймера для задержки вывода
-  let timer = setTimeout(() => {});
+  let timer: ReturnType<typeof setTimeout> | undefined = undefined;
 
-  // Очищает данные в контекстах
-  const cleanData = () => {
+  // При изменении поисковой строки выполняем поиск
+  // географического объекта
+  const { data: geoObject } = useGetGeoObjectQuery(geoSearch);
+  // если поисковая строка не пустая и запрос вернул результат,
+  if (geoSearch && geoObject) {
+    // сохраняем результат в хронилище
+    setGeoObject(geoObject);
+  } else {
+    // иначе очищаем в хранилище старое значение результата
     clearGeoObject();
+  }
+
+  // При изменении географического объекта выполняем
+  // запрос данных по загрязнениям
+  const { data: weatherData } = useGetWeatherDataQuery(geoObject);
+  // если поисковая строка не пустая и запрос вернул результат,
+  if (geoSearch && weatherData) {
+    // сохраняем результат в хронилище
+    setWeatherData(weatherData);
+  } else {
+    // иначе очищаем в хранилище старое значение результата
     clearWeatherData();
-  };
-
-  // Собирает запрс из базового URL и словаря параметров,
-  // выполняет его и преобразует результат в JSON
-  const fetchurl = (u: string, s: any) => {
-    const r = new URL(u);
-    r.search = new URLSearchParams(s).toString();
-    return fetch(r).then((resp) => resp.json());
-  };
-
-  // Собирает последовательности времен измерений на каждую дату
-  const reduceFunc = (
-    accum: Map<string, number[]>,
-    value: string,
-    index: number
-  ) => {
-    const d = new Date(value).toLocaleDateString();
-    if (!accum.has(d)) {
-      accum.set(d, []);
-    }
-    accum.get(d)!.push(index);
-    return accum;
-  };
+  }
 
   // Обрабатывает изменения строки поиска
   const SearchHandler = (e: { target: { value: string } }) => {
     clearTimeout(timer);
     timer = setTimeout(() => {
-      if (e.target.value) {
-        // Собираем URL и делаем запрос к Yandex
-        fetchurl(API_URL_GEO_DATA, {
-          apikey: API_KEY_YANDEX,
-          format: 'json',
-          geocode: e.target.value,
-        }).then((resp) => {
-          // Информацию о погоде тоже не всегда возвращают
-          console.log('resp' + resp); // tslint:disable-line:no-console
-          if (resp.response.GeoObjectCollection.featureMember.length) {
-            const go =
-              resp.response.GeoObjectCollection.featureMember[0].GeoObject;
-            // Обрабатываем ответ Yandex
-            setGeoObject!(go);
-            const pos = go.Point.pos.split(' ');
-
-            // Собираем URL и делаем запрос к open-meteo
-            fetchurl(API_URL_METEO_DATA, {
-              hourly: 'pm10,pm2_5',
-              latitude: pos[0],
-              longitude: pos[1],
-            }).then((resp1) => {
-              if (!resp1.error) {
-                resp1.hourly.map = resp1.hourly.time.reduce(
-                  reduceFunc,
-                  new Map()
-                );
-                setWeatherData!(resp1);
-              } else {
-                // Данные о погоде не получены, очищаем
-                cleanData();
-              }
-            });
-          } else {
-            // Географический объект не найден, очищаем
-            cleanData();
-          }
-        });
-      } else {
-        // В поисковой строе ничего нет, очищаем
-        cleanData();
-      }
+      setGeoSearch(e.target.value);
     }, DEBOUNCER_TIMEOUT);
   };
+
   return (
     <>
       <input

@@ -13,6 +13,7 @@ import { useSelector } from 'react-redux';
 import store from '../../store';
 
 export const WeatherChart = () => {
+  // Получаем данные о загрязнениях из хранилища
   const weatherData = useSelector(
     (state: ReturnType<typeof store.getState>) =>
       state.Reducer.weatherDataReducer.weatherData

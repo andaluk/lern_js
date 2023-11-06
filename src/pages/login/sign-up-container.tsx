@@ -1,5 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { useLazyGetLogonDataQuery } from '../../services/getLogonDataQuery'
+import { useDispatch } from 'react-redux'
+import { setLoginData as setLoginDataAction } from '../../slices'
 import {
   sUp,
   pMail,
@@ -8,28 +11,30 @@ import {
   errMsg,
   nameRegExp,
   mailRegExp,
-  LOGIN_URL,
-} from '../../const';
-import { Social } from './';
-import './input.scss';
+} from '../../const'
+import { Social } from './'
+import './input.scss'
 
 export const SignUpContainer = () => {
+  // Получаем диспетчер хранилища
+  const dispatch = useDispatch()
+
   // Имя пользователя при регистрации
-  const [Name, setName] = useState('');
+  const [Name, setName] = useState('')
 
   // Почта при регистрации
-  const [Mail, setMail] = useState('');
+  const [Mail, setMail] = useState('')
 
   // Пароль при регистрации
-  const [Pass1, setPass1] = useState('');
+  const [Pass1, setPass1] = useState('')
 
   // Повторение пароля при регистрации
-  const [Pass2, setPass2] = useState('');
+  const [Pass2, setPass2] = useState('')
 
   // Сообщение о ошибке при валидации
-  const [Err, setErr] = useState(1);
+  const [Err, setErr] = useState(1)
 
-  const navigate = useNavigate();
+  const navigate = useNavigate()
 
   // Валидация формы регистрации
   useEffect(
@@ -44,43 +49,57 @@ export const SignUpContainer = () => {
           !Pass1, // Пустой пароль
           !Pass2, // Пароль не повторили
           Pass1 !== Pass2, // Пароли не совпадают
-        ].indexOf(true) + 1 // Если не найдено вернет -1, а это соответствует нулевой ошибке
-      );
+        ].indexOf(true) + 1, // Если не найдено вернет -1, а это соответствует нулевой ошибке
+      )
     },
     // Выполняется при изменении следующих состояний
-    [Name, Mail, Pass1, Pass2]
-  );
+    [Name, Mail, Pass1, Pass2],
+  )
 
   // Обработчик изменения поля имени
   const NameHandler = (e: { target: { value: string } }) =>
-    setName(e.target.value);
+    setName(e.target.value)
 
   // Обработчик изменения поля почты
   const MailHandler = (e: { target: { value: string } }) =>
-    setMail(e.target.value);
+    setMail(e.target.value)
 
   // Обработчик изменения поля первого пароля
   const Pass1Handler = (e: { target: { value: string } }) =>
-    setPass1(e.target.value);
+    setPass1(e.target.value)
 
   // Обработчик изменения поля второго пароля
   const Pass2Handler = (e: { target: { value: string } }) =>
-    setPass2(e.target.value);
+    setPass2(e.target.value)
+
+  // Получаем функцию запроса данных о пользователе и другие параметры
+  const [
+    logonDataQuery,
+    {
+      data: logonData,
+      isError: logonDataError,
+      isSuccess: logonDataSuccess,
+      error: logonDataErrorMsg,
+    },
+  ] = useLazyGetLogonDataQuery()
+
+  // При запросе данных о пользователе произошла ошибка
+  if (logonDataError) {
+    console.error('loginDataError: ' + logonDataErrorMsg)
+  }
+
+  // Зпрос данных о пользователе выполнен без ошибок
+  if (logonDataSuccess) {
+    dispatch(setLoginDataAction(logonData))
+    navigate('/')
+  }
 
   // Обработчик запроса регистрации
   const submitHandler = (e: any) => {
-    e.preventDefault();
-    fetch(
-      `${LOGIN_URL}/user?${new URLSearchParams({
-        login: Name,
-        email: Mail,
-        pass: Pass1,
-      })}`
-    )
-      .then((resp) => resp.json())
-      .then(() => navigate('/'))
-      .catch((resp) => console.error('Sign Up filed. ' + resp));
-  };
+    // Без этого последующий запрос блокируется (в Firefox)
+    e.preventDefault()
+    logonDataQuery({ Name, Mail, Pass1 })
+  }
   return (
     <div className='form-container sign-up-container'>
       <form onSubmit={submitHandler}>
@@ -122,5 +141,5 @@ export const SignUpContainer = () => {
         )}
       </form>
     </div>
-  );
-};
+  )
+}

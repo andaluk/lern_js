@@ -15,7 +15,7 @@ export type weatherDataType =
 const weatherDataSlice = createSlice({
   name: 'WeatherData',
   initialState: { weatherData: undefined } as {
-    weatherData: weatherDataType | undefined;
+    weatherData: weatherDataType;
   },
   reducers: {
     setWeatherData(state, action: PayloadAction<weatherDataType>) {
