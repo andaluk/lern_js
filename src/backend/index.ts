@@ -46,7 +46,8 @@ app.post('/login', (req: Request, res: Response) => {
   }
 })
 
-app.put('/geoobject', (req: Request, res: Response) => {
+// Записываем в mongodb результаты поиска
+app.post('/geoobject', (req: Request, res: Response) => {
   if (req.body.name && req.body.pos) {
     const go = new geoObject({
       name: req.body.name,
@@ -55,6 +56,7 @@ app.put('/geoobject', (req: Request, res: Response) => {
     go.save()
   }
 })
+
 mongoose.connect(MONGO_URL)
 
 mongoose.connection

@@ -1,15 +1,21 @@
-import React, { useState } from 'react';
-import { SignUpContainer, SignInContainer, AppFrame } from './';
-import { sIn, sUp, ghClass } from '../../const';
-import './login.scss';
+import React, { useEffect, useState } from 'react'
+import { SignUpContainer, SignInContainer, AppFrame } from './'
+import { sIn, sUp, ghClass, APP_TITLE } from '../../const'
+import './login.scss'
 
 const Login = () => {
   // Форма переключена на регистрацию
-  const [isSignUp, setSignUp] = useState(false);
+  const [isSignUp, setSignUp] = useState(false)
   // Обработчик перехода на форму входа
-  const ButtonSinClickHandler = () => setSignUp(false);
+  const ButtonSinClickHandler = () => setSignUp(false)
   // Обработчик перехода на форму регистрации
-  const ButtonSupClickHandler = () => setSignUp(true);
+  const ButtonSupClickHandler = () => setSignUp(true)
+
+  // Устанавливаем заголовок окна
+  useEffect(() => {
+    document.title = `${APP_TITLE}. ${isSignUp ? sUp : sIn}`
+  }, [isSignUp])
+
   return (
     <>
       <AppFrame
@@ -39,7 +45,7 @@ const Login = () => {
         </div>
       </AppFrame>
     </>
-  );
-};
+  )
+}
 
-export default Login;
+export default Login

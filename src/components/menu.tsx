@@ -1,5 +1,6 @@
 import { NavLink } from 'react-router-dom'
 import './menu.scss'
+import { APP_TITLE } from '../const'
 
 // Общее меню
 export const Menu = () => (
@@ -10,7 +11,7 @@ export const Menu = () => (
       title='Меню'
     />
     <NavLink to='/login'>Вход</NavLink>
-    <NavLink to='/'>Домой</NavLink>
+    <NavLink to='/'>{APP_TITLE}</NavLink>
     <NavLink to='/about'>О программе</NavLink>
     <NavLink to='/e404'>Ошибка 404</NavLink>
   </nav>
