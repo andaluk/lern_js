@@ -5,6 +5,7 @@ import { weatherDataAPI } from '../services/getWeatherDataQuery'
 import { geoObjectAPI } from '../services/getGeoObjectQuery'
 import { loginDataAPI } from '../services/getLoginDataQuery'
 import { logonDataAPI } from '../services/getLogonDataQuery'
+import { postGeoObjectAPI } from '../services/postGeoObjectQuery'
 
 const store = configureStore({
   reducer: {
@@ -16,6 +17,7 @@ const store = configureStore({
     [geoObjectAPI.reducerPath]: geoObjectAPI.reducer,
     [loginDataAPI.reducerPath]: loginDataAPI.reducer,
     [logonDataAPI.reducerPath]: logonDataAPI.reducer,
+    [postGeoObjectAPI.reducerPath]: postGeoObjectAPI.reducer,
   },
   middleware: [
     thunk,
@@ -23,6 +25,7 @@ const store = configureStore({
     geoObjectAPI.middleware,
     loginDataAPI.middleware,
     logonDataAPI.middleware,
+    postGeoObjectAPI.middleware,
   ],
 })
 

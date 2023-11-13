@@ -2,7 +2,7 @@ import express, { Express, Request, Response } from 'express'
 import bodyParser from 'body-parser'
 import cors from 'cors'
 import mongoose from 'mongoose'
-import { geoObject } from './mongoschema'
+import { geoObjectModel } from './mongoschema'
 
 const MONGO_URL = 'mongodb://127.0.0.1/my_database'
 const PORT = 3001
@@ -48,20 +48,36 @@ app.post('/login', (req: Request, res: Response) => {
 
 // Записываем в mongodb результаты поиска
 app.post('/geoobject', (req: Request, res: Response) => {
-  if (req.body.name && req.body.pos) {
-    const go = new geoObject({
-      name: req.body.name,
-      pos: req.body.pos,
-    })
-    go.save()
+  // Если данные присутствуют
+  if (req.body.geoObject && req.body.weatherData) {
+    geoObjectModel
+      // Пытаемся сохранить данные
+      .create({
+        geoObject: req.body.geoObject,
+        weatherData: req.body.weatherData,
+      })
+      // Все сохранилось
+      .then(({ _id }) => {
+        console.log('Документ записан.', _id)
+        res.status(200).send(_id.toString())
+      })
+      // Сохранение не получилось
+      .catch((reson) => {
+        console.log('Документ не удалось сохранить.', reson)
+        res.status(500).send('Internal server error.' + reson)
+      })
   }
 })
 
+// Подклюсаем mogoose
 mongoose.connect(MONGO_URL)
 
 mongoose.connection
+  // Подключение не удплось
   .on('error', console.error)
+  // Подключение порвалось
   .on('disconnected', () => mongoose.connect(MONGO_URL))
+  // Удачно подключились
   .once('open', () => {
     // Ждем запросов на нужном порту
     app.listen(PORT, () => console.log(`Listening on port ${PORT}`))

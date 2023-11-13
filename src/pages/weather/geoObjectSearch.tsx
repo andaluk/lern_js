@@ -12,6 +12,8 @@ import {
 } from '../../slices'
 import { useGetWeatherDataQuery } from '../../services/getWeatherDataQuery'
 import { useGetGeoObjectQuery } from '../../services/getGeoObjectQuery'
+import { useLazyPostGeoObjectQuery } from '../../services/postGeoObjectQuery'
+import { useEffect } from 'react'
 
 export const GeoObjectSearch = () => {
   // Получаем диспетчер хранилища
@@ -48,6 +50,12 @@ export const GeoObjectSearch = () => {
     clearGeoObject()
   }
 
+  // Получаем функцию запроса и соответствующие константы
+  const [
+    postGeoObjectQuery,
+    { isError: isPostGeoObjectQueryError, error: postGeoObjectQueryError },
+  ] = useLazyPostGeoObjectQuery()
+
   // При изменении географического объекта выполняем
   // запрос данных по загрязнениям
   const { data: weatherData } = useGetWeatherDataQuery(geoObject)
@@ -59,6 +67,19 @@ export const GeoObjectSearch = () => {
     // иначе очищаем в хранилище старое значение результата
     clearWeatherData()
   }
+
+  // Сохраняем в базу данных всю полученную информацию
+  useEffect(() => {
+    postGeoObjectQuery({ geoObject, weatherData })
+      .then(({ data }) => console.log('Даееые записаны.', data))
+      .catch((reson) => console.error('Ошибка записи данных.', reson))
+    // По сути, нас итересует только когда все данные изменились полностью
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [weatherData])
+
+  // Произошла ошибка при сохранении
+  if (isPostGeoObjectQueryError)
+    console.error('postGeoObjectQueryError: ', postGeoObjectQueryError)
 
   // Обрабатывает изменения строки поиска
   const SearchHandler = (e: React.ChangeEvent<HTMLInputElement>) => {

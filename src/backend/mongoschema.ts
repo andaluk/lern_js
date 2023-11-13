@@ -1,9 +1,20 @@
 import mongoose from 'mongoose'
 
-const geoObjectSchema = new mongoose.Schema({
-  name: { type: String, require: true },
-  pos: { type: String, require: true },
-})
+// Название коллекции
+const MONGO_COLLECTION = 'history-query'
 
-//export type geoObjectType = mongoose.InferSchemaType<typeof geoObjectSchema>
-export const geoObject = mongoose.model('geoObject', geoObjectSchema)
+// Создаем схему
+const geoObjectSchema = new mongoose.Schema(
+  {
+    geoObject: {
+      type: Object,
+    },
+    weatherData: {
+      type: Object,
+    },
+  },
+  // Чтобы на конце имени коллекции не возникало s
+  { collection: MONGO_COLLECTION },
+)
+
+export const geoObjectModel = mongoose.model(MONGO_COLLECTION, geoObjectSchema)

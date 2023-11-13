@@ -51,4 +51,4 @@ export const API_URL_METEO_DATA =
 
 export const DEBOUNCER_TIMEOUT = 500
 
-export const LOGIN_URL = 'http://localhost:3001'
+export const BACKEND_URL = 'http://localhost:3001'
