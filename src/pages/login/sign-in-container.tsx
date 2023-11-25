@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
-import { sIn, pMail, pPass, errMsg, mailRegExp } from '../../const'
+import { sIn, pMail, pPass, errMsg } from '../../const'
+import { mailMatch } from './match'
 import { Social } from './'
 import './input.scss'
 import { useNavigate } from 'react-router-dom'
@@ -32,7 +33,7 @@ export const SignInContainer = () => {
           false, // Имя должно содержать англ. буквы и цифры
           !Mail, // Пустая почта
           // Проверка формата почты
-          !mailRegExp(Mail),
+          !mailMatch(Mail),
           !Pass, // Пустой пароль
         ].indexOf(true) + 1, // Если не найдено вернет -1, а это соответствует нулевой ошибке
       )

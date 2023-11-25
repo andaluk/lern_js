@@ -36,12 +36,11 @@ export const errMsg = [
   'Пароли не совпадают.',
 ]
 
-// Функция валидации имени
-export const nameRegExp = (n: string): boolean => /^[a-z0-9]+$/i.test(n)
+// регулярное выражение для валидации имени
+export const nameRegExp = /^[a-z0-9]+$/i
 
-// Функция валидации почты
-export const mailRegExp = (m: string): boolean =>
-  /^[a-z][a-z0-9._-]*@(?:[a-z0-9_-]+\.)*[a-z]{2,6}$/i.test(m)
+// регулярное выражение для валидации почты
+export const mailRegExp = /^[a-z][a-z0-9._-]*@(?:[a-z0-9_-]+\.)*[a-z]{2,6}$/i
 
 //Поиск географического объекта требуес ключ регистрации
 //export const API_KEY_YANDEX = '85eaff1b-ef9e-4c11-89bc-ca01d1ae43de';
@@ -58,8 +57,17 @@ export const API_URL_METEO_DATA =
 // время поисковая строка не менялась
 export const DEBOUNCER_TIMEOUT = 500
 
+// Порт, на котором работает бэкенд
+export const BACKEND_PORT = 3001
+
 // Адрес, на котором слушает express
-export const BACKEND_URL = 'http://localhost:3001'
+export const BACKEND_URL = `http://localhost:${BACKEND_PORT}`
+
+// Строка соединения с mongodb
+export const MONGO_URL = 'mongodb://127.0.0.1/my_database'
 
 // Название mongo коллекции для замиси истории географических объектов
 export const GEOOBJECT_MONGO_COLLECTION = 'history-query'
+
+// Название mongo коллекции для замиси информации о пользователях
+export const LOGIN_MONGO_COLLECTION = 'login-query'

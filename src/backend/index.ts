@@ -3,9 +3,7 @@ import bodyParser from 'body-parser'
 import cors from 'cors'
 import mongoose from 'mongoose'
 import { geoObjectModel } from './mongoGOschema'
-
-const MONGO_URL = 'mongodb://127.0.0.1/my_database'
-const PORT = 3001
+import { MONGO_URL, BACKEND_PORT } from '../const'
 
 const app: Express = express()
 
@@ -80,5 +78,7 @@ mongoose.connection
   // Удачно подключились
   .once('open', () => {
     // Ждем запросов на нужном порту
-    app.listen(PORT, () => console.log(`Listening on port ${PORT}`))
+    app.listen(BACKEND_PORT, () =>
+      console.log(`Listening on port ${BACKEND_PORT}`),
+    )
   })

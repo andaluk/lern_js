@@ -3,15 +3,8 @@ import { useNavigate } from 'react-router-dom'
 import { useLazyGetLogonDataQuery } from '../../services/getLogonDataQuery'
 import { useDispatch } from 'react-redux'
 import { setLoginData as setLoginDataAction } from '../../slices'
-import {
-  sUp,
-  pMail,
-  pName,
-  pPass,
-  errMsg,
-  nameRegExp,
-  mailRegExp,
-} from '../../const'
+import { sUp, pMail, pName, pPass, errMsg } from '../../const'
+import { nameMatch, mailMatch } from './match'
 import { Social } from './'
 import './input.scss'
 
@@ -43,9 +36,9 @@ export const SignUpContainer = () => {
         [
           // Проверки валидации в порядке следования сообщений о ошибках
           !Name, // Пустое имя
-          !nameRegExp(Name), // Имя должно содержать англ. буквы и цифры
+          !nameMatch(Name), // Имя должно содержать англ. буквы и цифры
           !Mail, // Пустая почта
-          !mailRegExp(Mail), // Проверка формата почты
+          !mailMatch(Mail), // Проверка формата почты
           !Pass1, // Пустой пароль
           !Pass2, // Пароль не повторили
           Pass1 !== Pass2, // Пароли не совпадают
