@@ -1,7 +1,5 @@
 import mongoose from 'mongoose'
-
-// Название коллекции
-const MONGO_COLLECTION = 'history-query'
+import { GEOOBJECT_MONGO_COLLECTION } from '../const'
 
 // Создаем схему
 const geoObjectSchema = new mongoose.Schema(
@@ -14,7 +12,10 @@ const geoObjectSchema = new mongoose.Schema(
     },
   },
   // Чтобы на конце имени коллекции не возникало s
-  { collection: MONGO_COLLECTION },
+  { collection: GEOOBJECT_MONGO_COLLECTION },
 )
 
-export const geoObjectModel = mongoose.model(MONGO_COLLECTION, geoObjectSchema)
+export const geoObjectModel = mongoose.model(
+  GEOOBJECT_MONGO_COLLECTION,
+  geoObjectSchema,
+)

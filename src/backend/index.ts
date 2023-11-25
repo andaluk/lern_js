@@ -2,7 +2,7 @@ import express, { Express, Request, Response } from 'express'
 import bodyParser from 'body-parser'
 import cors from 'cors'
 import mongoose from 'mongoose'
-import { geoObjectModel } from './mongoschema'
+import { geoObjectModel } from './mongoGOschema'
 
 const MONGO_URL = 'mongodb://127.0.0.1/my_database'
 const PORT = 3001
