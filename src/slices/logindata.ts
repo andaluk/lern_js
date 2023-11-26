@@ -2,7 +2,7 @@ import { PayloadAction, createSlice } from '@reduxjs/toolkit'
 import store from '../store'
 
 // Описываем тип информации о пользователе
-export type loginDataType = { login: string; email: string } | undefined
+export type loginDataType = { Name: string; Mail: string } | undefined
 
 // создаем в хранилище раздел для информации о пользователе
 const loginDataSlice = createSlice({
