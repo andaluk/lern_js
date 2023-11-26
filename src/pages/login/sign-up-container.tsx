@@ -91,7 +91,7 @@ export const SignUpContainer = () => {
   const submitHandler = (e: React.FormEvent<HTMLFormElement>) => {
     // Без этого последующий запрос блокируется (в Firefox)
     e.preventDefault()
-    logonDataQuery({ Name, Mail, Pass1 })
+    logonDataQuery({ Name, Mail, Pass: Pass1 })
   }
   return (
     <div className='form-container sign-up-container'>

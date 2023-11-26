@@ -4,6 +4,7 @@ import cors from 'cors'
 import mongoose from 'mongoose'
 import { geoObjectModel } from './mongoGOschema'
 import { MONGO_URL, BACKEND_PORT } from '../const'
+import { loginModel } from './mongoLoginSchema'
 
 const app: Express = express()
 
@@ -21,27 +22,55 @@ app.use(
 
 // Обрабатываем запрос GET на путь /user
 app.get('/user', (req: Request, res: Response) => {
-  // Если были переданы нужные данные
-  if (req.query.login && req.query.email) {
-    // Возвращаем заглушку в формате JSON
-    res.json({ login: req.query.login, email: req.query.email })
-  } else {
-    // Если данные не были переданы, отвечаем сообщением о ошибке
-    res.status(400).send('Bad request.')
-  }
+  loginModel
+    // Пытаемся сохранить данные в mongodb
+    .create({
+      Mail: req.query.Mail,
+      Name: req.query.Name,
+      Pass: req.query.Pass,
+    })
+    // Если удачно сохранили
+    .then(({ _id, Name, Mail }) => {
+      // Пишем лог
+      console.log('Сохранен новый пользователь', { _id, Name, Mail })
+      // Возвращаем информацию о пользователе
+      res.json({ Name, Mail })
+    })
+    // Если не удалось сохранить
+    .catch(() => {
+      // отвечаем сообщением о ошибке
+      res.status(400).send('Bad request.')
+    })
 })
 
 // Обрабатываем POST на путь /login
 app.post('/login', (req: Request, res: Response) => {
-  // У POST данные передаются в теле запроса
-  if (req.body.email) {
-    // Если нужные данные были переданы, возвращаем
-    // заглушку в формате JSON
-    res.json({ login: req.body.email, email: req.body.email })
-  } else {
-    // Если данные не были переданы, отвечаем сообщением о ошибке
-    res.status(400).send('Bad request.')
-  }
+  const qdata = { Mail: req.body.Mail, Pass: req.body.Pass }
+  console.log('Запрошен вход', qdata)
+
+  loginModel
+    // Ищем пользователя по почте и паролю
+    .findOne(qdata, { Mail: 1, Name: 1 })
+    .exec()
+    // Если запрос прошел удачно
+    .then((doc) => {
+      if (doc?._id) {
+        // Если нашли, посылаем информацию
+        console.log('Найден пользователь', {
+          _id: doc?._id,
+          Mail: doc?.Mail,
+          Name: doc?.Name,
+        })
+        res.json({ Mail: doc?.Mail, Name: doc?.Name })
+      } else {
+        // Если не нашли, возвращаем ошибку
+        res.status(401).send('Ошибка авторизации.')
+      }
+    })
+    // Ошибка про выполнении запроса
+    .catch((reson) => {
+      res.status(400).send(reson.toString)
+    })
 })
 
 // Записываем в mongodb результаты поиска

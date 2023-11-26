@@ -4,7 +4,10 @@ import { mailMatch } from './match'
 import { Social } from './'
 import './input.scss'
 import { useNavigate } from 'react-router-dom'
-import { useLazyGetLoginDataQuery } from '../../services/getLoginDataQuery'
+import {
+  loginDataAPI,
+  useLazyGetLoginDataQuery,
+} from '../../services/getLoginDataQuery'
 import { useDispatch } from 'react-redux'
 import { setLoginData as setLoginDataAction } from '../../slices'
 
@@ -22,25 +25,6 @@ export const SignInContainer = () => {
   const [Err, setErr] = useState(1)
 
   const navigate = useNavigate()
-
-  // Валидация формы регистрации
-  useEffect(
-    () => {
-      setErr(
-        [
-          // Проверки валидации в порядке следования сообщений о ошибках
-          false, // Пустое имя
-          false, // Имя должно содержать англ. буквы и цифры
-          !Mail, // Пустая почта
-          // Проверка формата почты
-          !mailMatch(Mail),
-          !Pass, // Пустой пароль
-        ].indexOf(true) + 1, // Если не найдено вернет -1, а это соответствует нулевой ошибке
-      )
-    },
-    // Выполняется при изменении следующих состояний
-    [Mail, Pass],
-  )
 
   // Обработчик изменения поля почты
   const onMailHandler = (e: React.ChangeEvent<HTMLInputElement>) =>
@@ -62,8 +46,8 @@ export const SignInContainer = () => {
   ] = useLazyGetLoginDataQuery()
 
   // При запросе данных о пользователе произошла ошибка
-  if (loginDataError) {
-    console.error('loginDataError: ' + loginDataErrorMsg)
+  if (loginDataError && loginDataErrorMsg) {
+    console.error('loginDataError: ', loginDataErrorMsg)
   }
 
   // Зпрос данных о пользователе выполнен без ошибок
@@ -72,11 +56,31 @@ export const SignInContainer = () => {
     navigate('/')
   }
 
+  // Валидация формы регистрации
+  useEffect(
+    () => {
+      setErr(
+        [
+          // Проверки валидации в порядке следования сообщений о ошибках
+          false, // Пустое имя
+          false, // Имя должно содержать англ. буквы и цифры
+          !Mail, // Пустая почта
+          // Проверка формата почты
+          !mailMatch(Mail),
+          !Pass, // Пустой пароль
+        ].indexOf(true) + 1, // Если не найдено вернет -1, а это соответствует нулевой ошибке
+      )
+      dispatch(loginDataAPI.util.resetApiState())
+    },
+    // Выполняется при изменении следующих состояний
+    [Mail, Pass, dispatch],
+  )
+
   // Обработчик операции входа
   const submitHandler = (e: React.FormEvent<HTMLFormElement>) => {
     // Без этого последующий запрос блокируется (в Firefox)
     e.preventDefault()
-    loginDataQuery({ email: Mail, pass: Pass })
+    loginDataQuery({ Mail, Pass })
   }
   return (
     <div className='form-container sign-in-container'>
@@ -100,6 +104,10 @@ export const SignInContainer = () => {
 
         {Err ? (
           <div className='errMessage'>{errMsg[Err]}</div>
+        ) : loginDataErrorMsg &&
+          'data' in loginDataErrorMsg &&
+          loginDataErrorMsg.data ? (
+          <div className='errMessage'>{String(loginDataErrorMsg.data)}</div>
         ) : (
           <button>{sIn}</button>
         )}

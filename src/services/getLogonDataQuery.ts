@@ -8,12 +8,7 @@ export const logonDataAPI = createApi({
   endpoints: (builder) => ({
     getLogonData: builder.query({
       // Конструируем запрос
-      query: (s) =>
-        `/user?${new URLSearchParams({
-          login: s.Name,
-          email: s.Mail,
-          pass: s.Pass1,
-        })}`,
+      query: (s) => `/user?${new URLSearchParams(s)}`,
     }),
   }),
 })
