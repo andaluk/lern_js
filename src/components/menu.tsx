@@ -1,8 +1,9 @@
 import { NavLink } from 'react-router-dom'
 import './menu.scss'
 import { APP_TITLE } from '../const'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import store from '../store'
+import { clearLoginData } from '../slices'
 
 // Общее меню
 export const Menu = () => {
@@ -10,6 +11,13 @@ export const Menu = () => {
     (state: ReturnType<typeof store.getState>) =>
       state.Reducer.loginDataReducer.loginData,
   )
+  // Получаем диспетчер хранилища
+  const dispatch = useDispatch()
+
+  const LogOff = () => {
+    console.log('Завершаем сессию.')
+    dispatch(clearLoginData())
+  }
   return (
     <nav className='menuBar'>
       <img
@@ -18,10 +26,14 @@ export const Menu = () => {
         title='Меню'
       />
       {login ? (
-        <div>Пользователь: {login.Mail}</div>
+        <>
+          <div>Пользователь: {login.Mail}</div>
+          <button onClick={LogOff}>Выйти</button>
+        </>
       ) : (
         <div>Пользователь не вошел</div>
       )}
+      <hr />
       <NavLink to='/login'>Вход</NavLink>
       <NavLink to='/'>{APP_TITLE}</NavLink>
       <NavLink to='/about'>О программе</NavLink>
