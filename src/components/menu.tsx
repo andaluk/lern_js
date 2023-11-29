@@ -4,6 +4,7 @@ import { APP_TITLE } from '../const'
 import { useDispatch, useSelector } from 'react-redux'
 import store from '../store'
 import { clearLoginData } from '../slices'
+import { Button } from '../stories/Button'
 
 // Общее меню
 export const Menu = () => {
@@ -28,7 +29,7 @@ export const Menu = () => {
       {login ? (
         <>
           <div>Пользователь: {login.Mail}</div>
-          <button onClick={LogOff}>Выйти</button>
+          <Button onClick={LogOff} label='Выйти' />
         </>
       ) : (
         <div>Пользователь не вошел</div>

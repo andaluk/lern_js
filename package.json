@@ -8,13 +8,16 @@
     "start": "npm run build && npm run start:backend",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build"
   },
   "proxy": "http://localhost:3001",
   "eslintConfig": {
     "extends": [
       "react-app",
-      "react-app/jest"
+      "react-app/jest",
+      "plugin:storybook/recommended"
     ]
   },
   "browserslist": {
@@ -56,9 +59,23 @@
     "web-vitals": "^2.1.4"
   },
   "devDependencies": {
+    "@storybook/addon-essentials": "^7.6.1",
+    "@storybook/addon-interactions": "^7.6.1",
+    "@storybook/addon-links": "^7.6.1",
+    "@storybook/addon-onboarding": "^1.0.8",
+    "@storybook/blocks": "^7.6.1",
+    "@storybook/preset-create-react-app": "^7.6.1",
+    "@storybook/react": "^7.6.1",
+    "@storybook/react-webpack5": "^7.6.1",
+    "@storybook/test": "^7.6.1",
     "@types/cors": "^2.8.15",
     "cypress": "^13.6.0",
+    "cypress-real-events": "^1.11.0",
+    "eslint-plugin-storybook": "^0.6.15",
     "prettier": "^3.0.3",
-    "sass": "^1.68.0"
+    "prop-types": "^15.8.1",
+    "sass": "^1.68.0",
+    "storybook": "^7.6.1",
+    "webpack": "^5.89.0"
   }
 }

@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { SignUpContainer, SignInContainer, AppFrame } from './'
-import { sIn, sUp, ghClass, APP_TITLE } from '../../const'
+import { sIn, sUp, APP_TITLE } from '../../const'
 import './login.scss'
+import { Button } from '../../stories/Button'
 
 const Login = () => {
   // Форма переключена на регистрацию
@@ -30,16 +31,12 @@ const Login = () => {
             <div className='overlay-panel overlay-left'>
               <h2>Уже зарегистрированы?</h2>
               <p>Вернуться к входу.</p>
-              <button className={ghClass} onClick={ButtonSinClickHandler}>
-                {sIn}
-              </button>
+              <Button primary label={sIn} onClick={ButtonSinClickHandler} />
             </div>
             <div className='overlay-panel overlay-right'>
               <h2>Еще не регистрировались?</h2>
               <p>Введите свои данные для регистрации.</p>
-              <button className={ghClass} onClick={ButtonSupClickHandler}>
-                {sUp}
-              </button>
+              <Button primary label={sUp} onClick={ButtonSupClickHandler} />
             </div>
           </div>
         </div>

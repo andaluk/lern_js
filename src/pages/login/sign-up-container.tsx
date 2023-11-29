@@ -7,6 +7,7 @@ import { sUp, pMail, pName, pPass, errMsg } from '../../const'
 import { nameMatch, mailMatch } from './match'
 import { Social } from './'
 import './input.scss'
+import { Button } from '../../stories/Button'
 
 export const SignUpContainer = () => {
   // Получаем диспетчер хранилища
@@ -88,9 +89,7 @@ export const SignUpContainer = () => {
   }
 
   // Обработчик запроса регистрации
-  const submitHandler = (e: React.FormEvent<HTMLFormElement>) => {
-    // Без этого последующий запрос блокируется (в Firefox)
-    e.preventDefault()
+  const submitHandler = () => {
     logonDataQuery({ Name, Mail, Pass: Pass1 })
   }
   return (
@@ -130,7 +129,7 @@ export const SignUpContainer = () => {
         {Err ? (
           <div className='errMessage'>{errMsg[Err]}</div>
         ) : (
-          <button>{sUp}</button>
+          <Button onClick={submitHandler} label={sUp} />
         )}
       </form>
     </div>

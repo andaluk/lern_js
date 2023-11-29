@@ -156,7 +156,7 @@
 
     $ghost: ghost;
 
-    button {
+    /* button {
         border-radius: 20px;
         border: 1px solid $frontColor;
         background-color: $frontColor;
@@ -182,7 +182,7 @@
             border-color: $backColor;
         }
     }
-
+ */
 }
 
 body:has(.loginFrame) {

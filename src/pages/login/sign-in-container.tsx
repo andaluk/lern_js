@@ -10,6 +10,7 @@ import {
 } from '../../services/getLoginDataQuery'
 import { useDispatch } from 'react-redux'
 import { setLoginData as setLoginDataAction } from '../../slices'
+import { Button } from '../../stories/Button'
 
 export const SignInContainer = () => {
   // Получаем диспетчер хранилища
@@ -77,14 +78,12 @@ export const SignInContainer = () => {
   )
 
   // Обработчик операции входа
-  const submitHandler = (e: React.FormEvent<HTMLFormElement>) => {
-    // Без этого последующий запрос блокируется (в Firefox)
-    e.preventDefault()
+  const submitHandler = () => {
     loginDataQuery({ Mail, Pass })
   }
   return (
     <div className='form-container sign-in-container'>
-      <form onSubmit={submitHandler}>
+      <form>
         <h2>Вход</h2>
         <Social />
 
@@ -109,7 +108,7 @@ export const SignInContainer = () => {
           loginDataErrorMsg.data ? (
           <div className='errMessage'>{String(loginDataErrorMsg.data)}</div>
         ) : (
-          <button>{sIn}</button>
+          <Button onClick={submitHandler} label={sIn} />
         )}
       </form>
     </div>
