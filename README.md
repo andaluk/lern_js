@@ -1,6 +1,16 @@
 # Аттестационная работа 3
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+ВНИМАНИЕ!!!
+После выполнения
+
+npm i
+
+надо гдалить директорию
+
+node_modules/react-scripts/node_modules/react-refresh
+
+Там содержится react-refresh@0.11.0. Storybook по зависимостям устанавливает react-refresh@0.14.0 в основную директорию с модулями и webpack компилирует проек с этой версией модуля, но react-scripts находит версию у себя в директории и пытается использовать ее. В итоге проек не запускается на отладку.
 
 ## Доступные скрипты
 

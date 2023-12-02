@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import { ReactNode } from 'react'
 
 // Блочный элемент с тенью, заголовками и картинкой
 export const AppFrame = ({
@@ -8,11 +8,11 @@ export const AppFrame = ({
   children,
   className,
 }: {
-  head1?: ReactNode;
-  head2?: ReactNode;
-  image?: string;
-  children?: ReactNode;
-  className?: string;
+  head1?: ReactNode
+  head2?: ReactNode
+  image?: string
+  children?: ReactNode
+  className?: string
 }) => (
   <>
     {head1 ? (
@@ -33,4 +33,4 @@ export const AppFrame = ({
       {children ? children : ''}
     </div>
   </>
-);
+)
